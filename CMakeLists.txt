@@ -6,45 +6,45 @@ cmake_minimum_required(VERSION 3.0)
 
 project(Nilorea)
 
-set(A5_DEP_SEARCH_PATH "../Allegro525" CACHE PATH "Where to find allegro 5")
+set(A5_DEP_SEARCH_PATH "/usr/local/allegro525" CACHE PATH "Where to find allegro 5")
 
 set(ALLEGRO5_LIB_DIR "$CACHE{A5_DEP_SEARCH_PATH}/lib")
 
-set(NILOREA_INCLUDE_DIRS "include" "$CACHE{A5_DEP_SEARCH_PATH}/include/allegro5" "$CACHE{A5_DEP_SEARCH_PATH}/include")
+set(NILOREA_INCLUDE_DIRS "include" "$CACHE{A5_DEP_SEARCH_PATH}/include/allegro5" "$CACHE{A5_DEP_SEARCH_PATH}/include" "/usr/include")
 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-   find_library(A5_MONOLITH NAMES liballegro_monolith-debug-static.a PATHS ${ALLEGRO5_LIB_DIR})
+   find_library(A5_MONOLITH NAMES allegro_monolith-debug PATHS ${ALLEGRO5_LIB_DIR})
    find_library(A5_ADDONS NAMES 
-         liballegro_color-debug.a 
-         liballegro_image-debug.a 
-         liballegro_memfile-debug.a 
-         liballegro_ttf-debug.a 
-         liballegro_font-debug.a 
-         liballegro_physfs-debug.a 
-         liballegro_dialog-debug.a 
-         liballegro_video-debug.a 
-         liballegro_acodec-debug.a 
-         liballegro_main-debug.a 
-         liballegro_primitives-debug.a 
-         liballegro_audio-debug.a 
-         liballegro-debug.a
+         liballegro_color-debug
+         liballegro_image-debug 
+         liballegro_memfile-debug 
+         liballegro_ttf-debug 
+         liballegro_font-debug 
+         liballegro_physfs-debug 
+         liballegro_dialog-debug 
+         liballegro_video-debug 
+         liballegro_acodec-debug 
+         liballegro_main-debug 
+         liballegro_primitives-debug 
+         liballegro_audio-debug 
+         liballegro-debug
          PATHS ${ALLEGRO5_LIB_DIR})
 else()
-   find_library(A5_MONOLITH NAMES liballegro_monolith-static.a PATHS ${ALLEGRO5_LIB_DIR})
+   find_library(A5_MONOLITH NAMES allegro_monolith PATHS ${ALLEGRO5_LIB_DIR})
    find_library(A5_ADDONS NAMES 
-         liballegro_color.a 
-         liballegro_image.a 
-         liballegro_memfile.a 
-         liballegro_ttf.a 
-         liballegro_font.a 
-         liballegro_physfs.a 
-         liballegro_dialog.a 
-         liballegro_video.a 
-         liballegro_acodec.a 
-         liballegro_main.a 
-         liballegro_primitives.a 
-         liballegro_audio.a 
-         liballegro.a
+         liballegro_color 
+         liballegro_image 
+         liballegro_memfile 
+         liballegro_ttf 
+         liballegro_font 
+         liballegro_physfs 
+         liballegro_dialog 
+         liballegro_video 
+         liballegro_acodec 
+         liballegro_main 
+         liballegro_primitives 
+         liballegro_audio 
+         liballegro
          PATHS ${ALLEGRO5_LIB_DIR})
 endif("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 
@@ -105,11 +105,20 @@ else()
    target_compile_options(NiloreaObjects PRIVATE "-O2")
 endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-target_compile_options(NiloreaObjects PRIVATE "-std=c11")
+target_compile_options(NiloreaObjects PRIVATE "-std=gnu11")
 
          
 add_library(Nilorea STATIC $<TARGET_OBJECTS:NiloreaObjects>)
 
 target_link_libraries(Nilorea ${ALLEGRO_LINK_LIBS})
+
+install(TARGETS Nilorea LIBRARY DESTINATION /usr/local/Nilorea/lib)
+install(DIRECTORY include DESTINATION /usr/local/Nilorea)
+
+
+
+
+
+
 
 
