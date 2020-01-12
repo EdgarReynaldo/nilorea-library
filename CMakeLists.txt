@@ -112,8 +112,8 @@ add_library(Nilorea STATIC $<TARGET_OBJECTS:NiloreaObjects>)
 
 target_link_libraries(Nilorea ${ALLEGRO_LINK_LIBS})
 
-install(TARGETS Nilorea LIBRARY DESTINATION /usr/local/Nilorea/lib)
-install(DIRECTORY include DESTINATION /usr/local/Nilorea)
+install(TARGETS Nilorea LIBRARY DESTINATION /usr/local/nilorea/lib)
+install(DIRECTORY include DESTINATION /usr/local/nilorea)
 
 
 

@@ -269,6 +269,7 @@ void _n_log( int level, const char *file, const char *func, int line, const char
             break ;
         }
     }
+    fflush(out);
 }  /* _n_log( ... ) */
 
 
