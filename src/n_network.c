@@ -1306,7 +1306,7 @@ int netw_make_listening( NETWORK **netw, char *addr, char *port, int nbpending, 
  *\param sock_recv_buf NETW_SOCKET_RECV_BUF socket parameter , 0 or negative to leave defaults
  *\param send_list_limit Internal sending list maximum number of item. 0 or negative for unrestricted
  *\param recv_list_limit Internal receiving list maximum number of item. 0 or negative for unrestricted
- *\param non_blocking set to -1 to make it non blocking, to 0 for blocking, else it's the select timeout value in mseconds.
+ *\param non_blocking set to -1 to make it non blocking, to 0 for blocking, else it's the select timeout value in seconds.
  *\param retval EAGAIN ou EWOULDBLOCK or errno
  *\return NULL on failure, if not a pointer to the connected network
  */
