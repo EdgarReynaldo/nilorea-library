@@ -101,18 +101,20 @@ target_include_directories(NiloreaObjects PRIVATE ${NILOREA_INCLUDE_DIRS})
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
    target_compile_options(NiloreaObjects PRIVATE "-O0" "-ggdb")
+   add_library(NiloreaDebug STATIC $<TARGET_OBJECTS:NiloreaObjects>)
+   target_link_libraries(NiloreaDebug ${ALLEGRO_LINK_LIBS})
+   install(TARGETS NiloreaDebug LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
 else()
    target_compile_options(NiloreaObjects PRIVATE "-O2")
+   add_library(Nilorea STATIC $<TARGET_OBJECTS:NiloreaObjects>)
+   target_link_libraries(Nilorea ${ALLEGRO_LINK_LIBS})
+   install(TARGETS Nilorea LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
 endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 target_compile_options(NiloreaObjects PRIVATE "-std=gnu11")
 
-         
-add_library(Nilorea STATIC $<TARGET_OBJECTS:NiloreaObjects>)
 
-target_link_libraries(Nilorea ${ALLEGRO_LINK_LIBS})
 
-install(TARGETS Nilorea LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
 install(DIRECTORY include DESTINATION "${CMAKE_INSTALL_PREFIX}")
 
 
