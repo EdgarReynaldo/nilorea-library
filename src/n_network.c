@@ -294,7 +294,7 @@ static char *inet_ntop6(const unsigned char *src, char *dst, socklen_t size)
 }
 
 
-//----------------
+//----  --------------------------------------------------------------------------------------------------------
 /*
  * Copyright (c) 2004 by Internet Systems Consortium, Inc. ("ISC")
  * Copyright (c) 1996,1999 by Internet Software Consortium.
@@ -1958,13 +1958,14 @@ int send_data( SOCKET s, char *buf, NSTRBYTE n )
         }
         else
         {
+           int err = errno;
             if( errno == ECONNRESET )
             {
                 n_log( LOG_DEBUG, "socket %d disconnected !", s );
                 return -2 ;
             }
             /* signal an error to the caller */
-            n_log( LOG_ERR,  "Socket %d receive Error: %d , %s", s, br, strerror( errno ) );
+            n_log( LOG_ERR,  "Socket %d receive Error: %d , %s", s, br, strerror( err ) );
             return -1 ;
         }
     }
@@ -2010,9 +2011,31 @@ int recv_data( SOCKET s, char *buf, NSTRBYTE n )
                 n_log( LOG_DEBUG,  "socket %d disconnected !", s );
                 return -2 ;
             }
-            /* signal an error to the caller */
-            n_log( LOG_ERR,  "socket %d receive Error: %s", s, strerror( errno ) );
-            return -1 ;
+            else {
+   #ifdef __windows__
+               LPVOID sbuf;
+               if (br == SOCKET_ERROR) {
+                  DWORD err = WSAGetLastError();
+                  FormatMessage(
+                       FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+                       FORMAT_MESSAGE_FROM_SYSTEM |
+                       FORMAT_MESSAGE_IGNORE_INSERTS,
+                       NULL,
+                       err,
+                       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                       (LPTSTR) &sbuf,
+                       0, NULL );
+                  n_log(LOG_ERR , "Windows socket %d recv error %d : %s" , s , err , (LPTSTR)sbuf);
+                  LocalFree(sbuf);
+               }
+               
+   #else
+               int err = errno;
+               /* signal an error to the caller */
+               n_log( LOG_ERR,  "socket %d receive Error: %s", s, strerror( err ) );
+               return -1 ;
+   #endif
+            }
         }
     }
 
