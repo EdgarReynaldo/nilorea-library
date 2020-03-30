@@ -2027,13 +2027,12 @@ int recv_data( SOCKET s, char *buf, NSTRBYTE n )
                        0, NULL );
                   n_log(LOG_ERR , "Windows socket %d recv error %d : %s" , s , err , (LPTSTR)sbuf);
                   LocalFree(sbuf);
+                  return -1;
                }
-               
    #else
-               int err = errno;
                /* signal an error to the caller */
-               n_log( LOG_ERR,  "socket %d receive Error: %s", s, strerror( err ) );
-               return -1 ;
+               n_log( LOG_ERR,  "socket %d receive Error: %s", s, strerror( errno ) );
+               return -1;
    #endif
             }
         }
